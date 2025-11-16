@@ -1,3 +1,8 @@
+# Downloads
+mp3/
+mp4/
+unused/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
