@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Descargador de YouTube",
+  "version": "2.0",
+  "description": "Inyecta un panel de descarga en las páginas de video de YouTube.",
+  "permissions": [
+    "storage" 
+  ],
+  "host_permissions": [
+    "http://localhost:5000/*",
+    "*://*.youtube.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/watch*"],
+      "css": ["ui.css"],
+      "js": ["content.js"]
+    }
+  ]
+}

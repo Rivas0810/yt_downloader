@@ -1,0 +1,225 @@
+/* --- Estilos del Panel Deslizante (Modo Oscuro YouTube) --- */
+#flask-downloader-panel {
+    position: fixed;
+    top: 120px;
+    right: 0;
+    width: 300px;
+    
+    /* Fondo Gris Oscuro (Estilo YouTube) */
+    background-color: #212121; 
+    color: #ffffff;
+    
+    /* Sombra suave */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5); 
+    z-index: 2147483647; 
+    padding: 20px;
+    border-radius: 0 0 0 12px; /* Bordes un poco más redondeados */
+    border-left: 1px solid #333; /* Borde sutil para separar */
+    border-bottom: 1px solid #333;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    
+    /* Lógica de visualización */
+    overflow: visible; 
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform: translateX(0);
+}
+
+/* Estado cerrado */
+#flask-downloader-panel.panel-collapsed {
+    transform: translateX(100%);
+}
+
+/* --- Título --- */
+#flask-downloader-panel h3 {
+    margin: 0 0 20px 0;
+    font-size: 14px; 
+    font-weight: 500;
+    text-transform: capitalize; 
+    
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    border-bottom: 1px solid #3e3e3e;
+    padding-bottom: 10px;
+    text-align: center;
+    user-select: none;          
+    -webkit-user-select: none;
+    cursor: default;            
+}
+
+#toggle-panel-btn {
+    position: absolute;
+    top: 0;
+    left: -32px;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: #ff0000; 
+    color: white;
+    border: none;
+    border-radius: 7px 0 0 7px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 32px;
+    text-align: center;
+    box-shadow: -2px 2px 4px rgba(0,0,0,0.2);
+    z-index: 2147483648;
+}
+
+#toggle-panel-btn:hover {
+    background-color: #cc0000;
+}
+
+/* --- Botones de Acción (Mejorados) --- */
+#main-buttons button {
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    color: white;
+    padding: 12px; /* Un poco más grandes */
+    border-radius: 16px; /* Estilo "Pill" moderno de YouTube */
+    font-size: 14px;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#main-buttons button:active {
+    transform: scale(0.98); /* Efecto de click */
+}
+
+#dl-video-btn { 
+    background-color: #cc0000; /* Rojo YouTube un poco más oscuro */
+}
+#dl-video-btn:hover { 
+    background-color: #ff0000; 
+}
+
+#dl-audio-btn { 
+    background-color: #3ea6ff; /* Azul característico */
+    color: #0f0f0f; /* Texto oscuro para mejor contraste en azul claro */
+}
+#dl-audio-btn:hover { 
+    background-color: #6ebbff; 
+}
+
+/* --- Formulario (Estilo Oscuro) --- */
+#audio-form h4 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+    user-select: none;          
+    -webkit-user-select: none;
+    cursor: default;  
+}
+
+#audio-form input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    
+    /* Fondo oscuro para los inputs */
+    background-color: #121212; 
+    border: 1px solid #333;
+    color: #fff;
+    
+    border-radius: 4px;
+    box-sizing: border-box; 
+    outline: none;
+    font-size: 13px;
+}
+
+#audio-form input:focus {
+    border-color: #3ea6ff;
+}
+
+#audio-form label { 
+    font-size: 12px; 
+    color: #aaa; /* Texto gris suave */
+    display: block; 
+    margin-bottom: 4px;
+    user-select: none;          
+    -webkit-user-select: none;
+    cursor: default;    
+
+}
+
+#audio-form .button-group { 
+    display: flex; 
+    gap: 8px; 
+    margin-top: 10px;
+}
+
+/* Botones del formulario */
+#submit-audio-btn, #cancel-audio-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+#submit-audio-btn { background-color: #2ba640; }
+#submit-audio-btn:hover { background-color: #35cc4f; }
+
+#cancel-audio-btn { background-color: #404040; }
+#cancel-audio-btn:hover { background-color: #555; }
+
+/* --- Utilidades --- */
+.hidden { display: none !important; }
+
+/* --- Mensajes de estado (Lógica de espacio dinámico) --- */
+#status-message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: center;
+
+    opacity: 1;
+    max-height: 100px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.status-hidden { 
+    opacity: 0; 
+    visibility: hidden;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/* Colores de los mensajes */
+.status-success { 
+    background-color: rgba(40, 167, 69, 0.2); 
+    color: #4cd964; 
+    border: 1px solid #28a745;
+}
+.status-error { 
+    background-color: rgba(220, 53, 69, 0.2); 
+    color: #ff6b6b; 
+    border: 1px solid #dc3545;
+}
+
+#panel-footer {
+    position: absolute;
+    bottom: 5px;       
+    right: 10px;
+    
+    font-size: 10px;
+    color: #444;   
+    font-weight: 400;
+    pointer-events: none;
+    opacity: 1.0;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
