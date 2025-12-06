@@ -68,7 +68,7 @@ def worker_logic():
     if not os.path.exists(FFMPEG_PATH):
         gui_queue.put(f"ERROR: No se encuentra {FFMPEG_BINARY} en:\n{FFMPEG_PATH}")
     else:
-        gui_queue.put(f"Sistema listo. Guardando en: files/\nHecho por Fernando Rivas." )
+        gui_queue.put(f"Servidor listo. Guardando en: files/" )
 
     while True:
         try:
@@ -145,7 +145,7 @@ def worker_logic():
             gui_queue.put(msg_final)
             
             # --- CORRECCIÓN DE LA LÍNEA DE SEPARACIÓN ---
-            gui_queue.put(f"\n{'-' * 62}") 
+            gui_queue.put(f"\n{'-' * 57}") 
 
             safe_log_to_file(f"Tiempo: {duration}s | {safe_title}")
             task_queue.task_done()
@@ -180,7 +180,7 @@ def route_video():
     return jsonify({"error": "No data"}), 400
 
 # ==========================================
-# 5. INTERFAZ GRÁFICA
+# 5. INTERFAZ GRÁFICA (Estilo YouTube Dark)
 # ==========================================
 class ServerGUI(QWidget):
     def __init__(self):
@@ -191,45 +191,136 @@ class ServerGUI(QWidget):
         self.timer.start(100)
 
     def init_ui(self):
+        # --- Configuración de la Ventana ---
         self.setWindowTitle("Servidor Descargador de Youtube")
-        self.setFixedSize(600, 400)
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowMaximizeButtonHint) 
-        self.setStyleSheet("background-color: #f0f0f0;")
+        self.setFixedSize(600, 450)
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowMaximizeButtonHint)
+        
+        # --- DEFINICIÓN DE ESTILOS (QSS) ---
+        qss = """
+        QWidget {
+            background-color: #212121;
+            color: #ffffff;
+            font-family: 'Roboto', 'Arial', sans-serif;
+            font-size: 14px;
+        }
 
+        QTextEdit {
+            background-color: #121212;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #00ff00; 
+            font-family: 'Consolas', monospace;
+            font-size: 16px; 
+            padding: 8px;
+        }
+
+        /* --- SCROLLBAR MEJORADA (Alto Contraste y Estilo Moderno) --- */
+        QScrollBar:vertical {
+            border: none;
+            background: #1e1e1e;   /* Fondo oscuro sutil, no negro puro */
+            width: 14px;           /* Un poco más ancha para verla mejor */
+            margin: 0px;
+        }
+        QScrollBar::handle:vertical {
+            background: #555555;   /* Gris visible por defecto */
+            min-height: 20px;
+            border-radius: 7px;    /* Bordes más redondeados */
+            margin: 2px;           /* Margen interno para que "flote" */
+        }
+        QScrollBar::handle:vertical:hover {
+            background: #aaaaaa;   /* Se ilumina mucho al pasar el mouse */
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { 
+            height: 0px; 
+        }
+        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+            background: none;      /* Fondo limpio */
+        }
+
+        /* --- BOTONES --- */
+        QPushButton {
+            border: none;
+            border-radius: 16px;
+            padding: 10px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        QPushButton#BtnClear {
+            background-color: #3e82ff;
+            color: white;
+        }
+        QPushButton#BtnClear:hover { background-color: #6ebbff; }
+        QPushButton#BtnClear:pressed { padding-top: 12px; }
+
+        QPushButton#BtnClose {
+            background-color: #cc0000;
+            color: white;
+        }
+        QPushButton#BtnClose:hover { background-color: #ff0000; }
+        QPushButton#BtnClose:pressed { padding-top: 12px; }
+
+        /* --- FOOTER --- */
+        QLabel#FooterLabel {
+            font-size: 11px;
+            color: #444444;
+            font-weight: 400;
+            background: transparent;
+            padding: 0px;
+            margin: 0px;
+        }
+        """
+        self.setStyleSheet(qss)
+
+        # --- LAYOUT PRINCIPAL ---
         layout = QVBoxLayout()
-        lbl_title = QLabel("Servidor Activo")
-        lbl_title.setAlignment(Qt.AlignCenter)
-        lbl_title.setFont(QFont("Arial", 14, QFont.Bold))
-        layout.addWidget(lbl_title)
+        layout.setSpacing(14)   
+        layout.setContentsMargins(20, 20, 20, 25) 
 
+        # Icono
         if os.path.exists(ICON_PATH):
             try:
-                app_icon = QIcon(ICON_PATH)
-                self.setWindowIcon(app_icon)
-                print("Icono cargado con éxito.")
-            except Exception as e:
-                print(f"Error de carga: No se pudo establecer el icono '{ICON_FILE}'. Detalles: {e}")
-
-
+                self.setWindowIcon(QIcon(ICON_PATH))
+            except: pass
+            
+        # Log
         self.txt_log = QTextEdit()
         self.txt_log.setReadOnly(True)
-        self.txt_log.setStyleSheet("background-color: #1e1e1e; color: #00ff00; font-family: Consolas; font-size: 10pt;")
+        # Scrollbar siempre visible
+        self.txt_log.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         layout.addWidget(self.txt_log)
         
+        # Botones
         buttons_layout = QHBoxLayout()
+        buttons_layout.setSpacing(10)
 
         btn_clear = QPushButton("Limpiar pantalla")
-        btn_clear.setStyleSheet("background-color: orange; color: white; padding: 10px; font-weight: bold;")
+        btn_clear.setObjectName("BtnClear") 
+        btn_clear.setCursor(Qt.PointingHandCursor)
         btn_clear.clicked.connect(self.clear_log)
         buttons_layout.addWidget(btn_clear)
 
         btn_close = QPushButton("Cerrar")
-        btn_close.setStyleSheet("background-color: #d9534f; color: white; padding: 10px; font-weight: bold;")
+        btn_close.setObjectName("BtnClose") 
+        btn_close.setCursor(Qt.PointingHandCursor)
         btn_close.clicked.connect(self.close_app)
         buttons_layout.addWidget(btn_close)
 
         layout.addLayout(buttons_layout)
         self.setLayout(layout)
+        
+        # Footer
+        self.lbl_footer = QLabel("Hecho por Fernando Rivas", self)
+        self.lbl_footer.setObjectName("FooterLabel")
+        self.lbl_footer.adjustSize()
+
+    def resizeEvent(self, event):
+        padding_right = 10
+        padding_bottom = 3
+        x = self.width() - self.lbl_footer.width() - padding_right
+        y = self.height() - self.lbl_footer.height() - padding_bottom
+        self.lbl_footer.move(x, y)
+        super().resizeEvent(event)
 
     def check_queue(self):
         try:
