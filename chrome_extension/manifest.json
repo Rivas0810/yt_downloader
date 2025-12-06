@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Descargador de YouTube",
-  "version": "2.0",
+  "version": "3.0",
   "description": "Inyecta un panel de descarga en las páginas de video de YouTube.",
   "permissions": [
     "storage" 
@@ -12,7 +12,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/watch*"],
+      "matches": ["*://*.youtube.com/*"],
       "css": ["ui.css"],
       "js": ["content.js"]
     }
