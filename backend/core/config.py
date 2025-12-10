@@ -15,8 +15,8 @@ if not os.path.exists(FILES_DIR):
     os.makedirs(FILES_DIR, exist_ok=True)
 
 ICON_PATH = os.path.join(INTERNAL_PATH, "..", "assets", "youtube_icon.png")
-QSS_PATH = os.path.join(INTERNAL_PATH, "..", "assets", "styles.css")
-FFMPEG_PATH = os.path.join(INTERNAL_PATH, "bin", "ffmpeg_audio.exe") 
+QSS_PATH = os.path.join(INTERNAL_PATH, "..", "..", "assets", "styles.css")
+FFMPEG_PATH = os.path.join(INTERNAL_PATH,"..", "bin", "ffmpeg_audio.exe") 
 LOG_FILE = os.path.join(FILES_DIR, "history_log.txt")
 OUTPUT_AUDIO = os.path.join(FILES_DIR, "mp3")
 OUTPUT_VIDEO = os.path.join(FILES_DIR, "mp4")
